@@ -1,0 +1,23 @@
+{
+  "name": "linegiri",
+  "version": "1.0.0",
+  "description": "ギリギリ絵しりとりのプロトタイプをLINE Botで作る計画 今のところGASとLINE Botの連携を考え中",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tanichael/LineGiri.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tanichael/LineGiri/issues"
+  },
+  "homepage": "https://github.com/Tanichael/LineGiri#readme",
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.41"
+  }
+}
