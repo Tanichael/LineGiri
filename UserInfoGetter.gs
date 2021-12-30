@@ -1,25 +1,27 @@
-// class UserInfoGetter {
-//   constructor(userId) {
-//     this.userId = userId;
-//   }
+class UserInfoGetter {
+  constructor() {
 
-//   getInfo() {
-//     this.setOptions();
+  }
 
-//     userInfoJson = UrlFetchApp.fetch('https://api.line.me/v2/bot/profile/' + this.userId, this.options);
+  getInfo(userId) {
+    this.setOptions();
 
-//     const userInfo = JSON.parse(userInfoJson);
-//     this.userInfo = userInfo;
-//   }
+    var userInfoJson = UrlFetchApp.fetch('https://api.line.me/v2/bot/profile/' + userId, this.options).getContentText();
 
-//   setOptions() {
-//     var headers = {
-//       'Authorization': 'Bearer ' + TOKEN
-//     };
+    const userInfo = JSON.parse(userInfoJson);
+    this.userInfo = userInfo;
+  }
 
-//     var options = {
-//       'method': 'GET',
-//       'headers': headers,
-//     };
-//   }
-// }
+  setOptions() {
+    var headers = {
+      'Authorization': 'Bearer ' + TOKEN
+    };
+
+    var options = {
+      'method': 'GET',
+      'headers': headers,
+    };
+    this.options = options;
+  }
+
+}

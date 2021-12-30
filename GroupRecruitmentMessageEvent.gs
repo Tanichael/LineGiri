@@ -7,6 +7,7 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
     this.isEnd = false;
     this.isNoMember = false;
     this.mr = new MessageReplyer(event.replyToken);
+    this.ug = new UserInfoGetter();
   }
 
   //実行する処理をまとめる
@@ -30,7 +31,7 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
           range = sheet.getRange(this.sessionId+3, i+5);
           member = range.getValue();
           if(this.source.userId == member) {
-            replyText = "あなたはもう参加しています";
+            replyText = "あなたはもう参加しています！";
             this.mr.reply(replyText);
             return;
           }
@@ -51,7 +52,10 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
         for(var i = 0; i < population; i++) {
           var member;
           range = sheet.getRange(this.sessionId+3, i+5);
-          member = range.getValue();
+          var memberId = range.getValue();
+          
+          this.ug.getInfo(memberId);
+          member = this.ug.userInfo.displayName;
           replyText = replyText + member;
           if(i != population - 1) {
             replyText += "\n";
@@ -78,17 +82,22 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
         for(var i = 0; i < population; i++) {
           var member;
           range = sheet.getRange(this.sessionId+3, i+5);
-          member = range.getValue();
+          var memberId = range.getValue();
+          
+          this.ug.getInfo(memberId);
+          member = this.ug.userInfo.displayName;
           replyText = replyText + member;
           if(i != population - 1) {
             replyText += "\n";
           }
         }
 
-        this.mr.reply(replyText);
-
         range = sheet.getRange(this.sessionId+3, 5);
         var userId = range.getValue();
+        this.ug.getInfo(userId);
+        replyText += "\n\n" + "ゲームを開始します！\n" + this.ug.userInfo.displayName + "さんは個人チャットでお題と絵を送信してください！";
+        this.mr.reply(replyText);
+
         var mp = new MessagePusher(userId);
         mp.push("「り」から始まるお題を返信してください！");
       }
