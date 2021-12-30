@@ -11,41 +11,46 @@ function handleGroupEvent(event) {
   var length = sheet.getRange(1, 1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
 
   var flag = 0; //グループ検索フラグ
+  var state;
 
   for(var i = 0; i < length; i++) {
     var range = sheet.getRange(i+3, 2);
     if(range.getValue() == groupId) {
       range = sheet.getRange(i+3, 3);
-      var state = range.getValue();
+      state = range.getValue();
       //終了しているゲームの時
       if(state == 4) continue;
 
       //募集時の時
-      if(state == 0) {
+      else if(state == 0) {
         flag = 1;
         sessionId = i;
         me = new GroupRecruitmentMessageEvent(event, sessionId);
+        break;
       }
 
       //投稿待ちの時
-      if(state == 1) {
+      else if(state == 1) {
         flag = 1;
         sessionId = i;
         me = new GroupWaitMessageEvent(event);
+        break;
       }
 
       //回答中の時
-      if(state == 2) {
+      else if(state == 2) {
         flag = 1;
         sessionId = i;
         me = GroupAnswerMessageEvent(event);
+        break;
       }
 
       //答え合わせタイムの時
-      if(state == 3) {
+      else if(state == 3) {
         flag = 1;
         sessionId = i;
         me = GroupCheckMessageEvent(event);
+        break;
       }
     }
   }

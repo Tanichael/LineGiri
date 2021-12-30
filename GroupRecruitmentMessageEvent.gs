@@ -71,13 +71,18 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
         var population = range.getValue();
         if(population == 0) {
           this.isNoMember = true;
+          this.mr.reply("メンバーがいません！"); 
           return;
         }
         
         //メンバー確定
         this.isEnd = true;
-        //最初のユーザーを決定してpushmessegeを送信
+        
+        //ステートの変更
+        range = sheet.getRange(this.sessionId+3, 3);
+        range.setValue(1);
 
+        //最初のユーザーを決定してpushmessegeを送信
         var replyText = "参加者:\n";
         for(var i = 0; i < population; i++) {
           var member;

@@ -28,7 +28,7 @@ class GroupWaitMessageEvent extends MessageEvent {
       var replyText = "メンバー募集メッセージを送信します";
       this.replyText = replyText;
     } else {
-      var replyText = "ゲームを始める際は「@start」と発言してください！";
+      var replyText = "お題待ちです！";
       this.replyText = replyText;
     }
   }
