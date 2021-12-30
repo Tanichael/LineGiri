@@ -6,7 +6,7 @@ class MessagePusher {
   push(text) {
     this.setPushConfig(text);
 
-    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/push', this.postOptions);
+    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/push', this.pushOptions);
   }
 
   setPushText(text) {
