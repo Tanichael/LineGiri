@@ -32,7 +32,6 @@ class MessageEvent {
   }
 
   setReplyOptions() {
-
     var LineMessageObject = [{
       'type': 'text',
       'text': this.replyText
