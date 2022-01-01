@@ -1,3 +1,15 @@
+//------------------------------------------------------------------------------------------
+//
+// 参考文献
+//
+// ひらがな判定
+// url: https://javascript.programmer-reference.com/js-check-hiragana/
+//
+// カタカナ判定
+// url: https://javascript.programmer-reference.com/js-check-zenkaku-katakana/
+//
+//------------------------------------------------------------------------------------------
+
 class Utilities {
   static isKatakana(str) {
     str = (str==null)?"":str;
