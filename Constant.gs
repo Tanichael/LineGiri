@@ -10,7 +10,9 @@ const FOLDER_ID = "1r0gl9DOnpvj4OAA_qd4SO1LuU5CsTlnU";
 
 const POPULATION_LIMIT = 6;
 
-const TURN_LIMIT = 18; //現状 6人 * 3サイクル
+const CYCLE_LIMIT = 3;
+
+const TURN_LIMIT = POPULATION_LIMIT * CYCLE_LIMIT; //現状 6人 * 3サイクル
 
 const RECRUIT_BUBBLE_MESSAGE = 
 {
