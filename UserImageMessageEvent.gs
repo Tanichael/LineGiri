@@ -6,15 +6,68 @@ class UserImageMessageEvent extends MessageEvent {
   }
 
   handle() {
-    this.reply();
-    //色々終わってから画像保存などする 非同期ができないので
+    var mr = new MessageReplyer(this.replyToken);
+
+    if(this.event.message.type != "image") {
+      mr.reply("画像を投稿してください！");
+      return;
+    }
+
+    this.setSessionId();
     this.getBlob();
 
-    if(this.url) {
-      var sheet = this.ss.getActiveSheet();
-      var range = sheet.getRange(2, 2);
-      range.setValue(this.url);
+    if(this.imageId) {
+      var sheet = this.ss.getSheetByName("GameData");
+      var range = sheet.getRange(this.id+3, 7);
+      range.setValue(this.imageId);
+
+      mr.reply("Excellent!ではグループに戻ってください！！");
+
+      //グループへの画像送信処理
+      var groupId;
+      groupId = this.getGroupId();
+      var mp = new MessagePusher(groupId);
+      mp.pushImage(this.imageId);
+
+      sheet = this.ss.getSheetByName("Sessions");
+      range = sheet.getRange(this.sessionId+3, 17);
+      var lastWords = range.getValue();
+      var lastChar = Utilities.getLastChar(lastWords);
+
+      mp.push("画像はこちらです！では回答を始めてください！！\n回答を締め切るときは「@end」と発言してください！");
+      mp.push("答えは「" + lastChar + "」から始まる単語です！");
+
+      //ステート管理
+      this.manageState();
+
+    } else {
+      mr.reply("すみません！保存に失敗したのでもう一度送ってください！");
     }
+
+  }
+
+  getGroupId() {
+    var sheet = this.ss.getSheetByName("Sessions");
+    var range = sheet.getRange(this.sessionId+3, 2);
+    var groupId = range.getValue();
+
+    return groupId;
+  }
+
+  setSessionId() {
+    var sheet = this.ss.getSheetByName("GameData");
+    var range = sheet.getRange(this.id+3, 2);
+    this.sessionId = range.getValue();
+  }
+
+  manageState() {
+    var sheet = this.ss.getSheetByName("GameData");
+    var range = sheet.getRange(this.id+3, 5);
+    range.setValue(3);
+
+    sheet = this.ss.getSheetByName("Sessions");
+    range = sheet.getRange(this.sessionId+3, 3);
+    range.setValue(2);
   }
 
   getBlob() {
@@ -39,26 +92,10 @@ class UserImageMessageEvent extends MessageEvent {
     try{
       var folder = DriveApp.getFolderById(FOLDER_ID);
       var file = folder.createFile(blob);
-      this.url = file.getUrl();
+      this.imageId = file.getId();
     }catch(e){
-      this.url = false;
+      this.imageId = false;
     }
   }
 
-  reply() {
-    //返信処理
-    this.setReplyConfig();
-
-    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/reply', this.replyOptions);
-  }
-
-  setReplyText() {
-    var replyText = "Exellent!ではグループトークに戻ってください！";
-    this.replyText = replyText;
-  }
-
-  setReplyConfig() {
-    this.setReplyText();
-    this.setReplyOptions();
-  }
 }

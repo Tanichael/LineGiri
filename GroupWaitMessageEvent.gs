@@ -7,28 +7,12 @@ class GroupWaitMessageEvent extends MessageEvent {
   //実行する処理をまとめる
   handle() {
     this.processingEvent();
-    this.reply();
   }
 
   //themeを記録
   processingEvent() {
-    
+    var mr = new MessageReplyer(this.replyToken);
+    mr.reply("お題待ちです！");
   }
 
-  reply() {
-    //返信処理
-    this.setReplyConfig();
-
-    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/reply', this.replyOptions);
-  }
-
-  setReplyText() {
-    var replyText = "お題待ちです！";
-    this.replyText = replyText;
-  }
-
-  setReplyConfig() {
-    this.setReplyText();
-    this.setReplyOptions();
-  }
 }

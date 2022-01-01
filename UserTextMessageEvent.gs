@@ -48,11 +48,6 @@ class UserTextMessageEvent extends MessageEvent {
       var range = sheet.getRange(this.id+3, 6);
       range.setValue(this.theme);
 
-      //lastWordsの更新
-      sheet = this.ss.getSheetByName("Sessions");
-      range = sheet.getRange(this.sessionId+3, 17);
-      range.setValue(this.theme);
-
       //recordの更新
       sheet = this.ss.getSheetByName("Record");
       var gameLength = sheet.getRange(this.sessionId+3, 1).getNextDataCell(SpreadsheetApp.Direction.NEXT).getColumn();
@@ -122,7 +117,7 @@ class UserTextMessageEvent extends MessageEvent {
       return;
     }
 
-    var maxWordsNum = POPULATION_LIMIT * TURN_LIMIT;
+    var maxWordsNum = TURN_LIMIT;
     sheet = this.ss.getSheetByName("Record");
     for(var i = 0; i < maxWordsNum; i++) {
       range = sheet.getRange(this.sessionId+3, i+2);
