@@ -1,40 +1,38 @@
 //回答募集時のメッセージイベント
 class GroupAnswerMessageEvent extends MessageEvent {
-  constructor(event) {
+  constructor(event, sessionId) {
     super(event);
+    this.sessionId = sessionId;
   }
 
   //実行する処理をまとめる
   handle() {
+    if(this.event.message.type != "text") {
+      var mr = new MessageReplyer(this.replyToken);
+      mr.reply("メッセージを投稿してください！");
+    }
     this.processingEvent();
-    this.reply();
   }
 
-  //themeを記録
+  //回答の処理
   processingEvent() {
+    if(this.event.message.text == "@end") {
+      //終了のメッセージを投稿
+      //答え合わせタイムに以降
+    }
+    this.text = this.event.message.text;
+
+    var textLastChar = Utilities.getLastChar(this.text);
+
+    var answer;
+    var sheet = this.ss.getSheetByName("Record");
+    var gameLength = sheet.getRange(this.sessionId+3, 1).getNextDataCell(SpreadsheetApp.Direction.NEXT).getColumn();
+    range = sheet.getRange(this.sessionId+3, gameLength);
+    answer = range.getValue();
+    var answerLastChar = Utilities.getLastChar(answer);
+
+
     
   }
 
-  reply() {
-    //返信処理
-    this.setReplyConfig();
-
-    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/reply', this.replyOptions);
-  }
-
-  setReplyText() {
-    if(this.isStart == true) {
-      //バブルメッセージの生成
-      var replyText = "メンバー募集メッセージを送信します";
-      this.replyText = replyText;
-    } else {
-      var replyText = "ゲームを始める際は「@start」と発言してください！";
-      this.replyText = replyText;
-    }
-  }
-
-  setReplyConfig() {
-    this.setReplyText();
-    this.setReplyOptions();
-  }
 }

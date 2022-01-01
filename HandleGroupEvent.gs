@@ -20,36 +20,30 @@ function handleGroupEvent(event) {
       state = range.getValue();
       //終了しているゲームの時
       if(state == 4) continue;
-
-      //募集時の時
-      else if(state == 0) {
+      
+      if(state == 0) {
+        //募集時の時
         flag = 1;
         sessionId = i;
         me = new GroupRecruitmentMessageEvent(event, sessionId);
         break;
-      }
-
-      //投稿待ちの時
-      else if(state == 1) {
+      } else if(state == 1) {
+        //投稿待ち
         flag = 1;
         sessionId = i;
         me = new GroupWaitMessageEvent(event);
         break;
-      }
-
-      //回答中の時
-      else if(state == 2) {
+      } else if(state == 2) {
+        //回答中の時
         flag = 1;
         sessionId = i;
-        me = GroupAnswerMessageEvent(event);
+        me = new GroupAnswerMessageEvent(event, sessionId);
         break;
-      }
-
-      //答え合わせタイムの時
-      else if(state == 3) {
+      } else if(state == 3) {
+        //答え合わせタイムの時
         flag = 1;
         sessionId = i;
-        me = GroupCheckMessageEvent(event);
+        me = new GroupCheckMessageEvent(event);
         break;
       }
     }
