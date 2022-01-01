@@ -3,7 +3,7 @@ class MessageEvent {
     this.event = event;
     this.replyToken = event.replyToken;
     this.source = event.source;
-    this.ss = SpreadsheetApp.getActiveSpreadsheet();
+    this.ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   }
 
   get getReplyText() {

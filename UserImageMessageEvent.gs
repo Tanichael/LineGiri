@@ -1,7 +1,8 @@
 class UserImageMessageEvent extends MessageEvent {
-  constructor(event) {
+  constructor(event, id) {
     super(event);
     this.contentId = event.message.id;
+    this.id = id;
   }
 
   handle() {

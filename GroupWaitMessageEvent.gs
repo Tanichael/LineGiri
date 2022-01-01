@@ -23,14 +23,8 @@ class GroupWaitMessageEvent extends MessageEvent {
   }
 
   setReplyText() {
-    if(this.isStart == true) {
-      //バブルメッセージの生成
-      var replyText = "メンバー募集メッセージを送信します";
-      this.replyText = replyText;
-    } else {
-      var replyText = "お題待ちです！";
-      this.replyText = replyText;
-    }
+    var replyText = "お題待ちです！";
+    this.replyText = replyText;
   }
 
   setReplyConfig() {

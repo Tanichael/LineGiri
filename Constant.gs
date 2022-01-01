@@ -1,12 +1,16 @@
 //UserID
-const userId = "Uce9cb261c09d08072e5fcb45c25b187c";
+const LINE_USER_ID = "Uce9cb261c09d08072e5fcb45c25b187c";
 
 //チャンネルアクセストークン
 const TOKEN = "MOoaEu/BNnMDA1JWVH85iuIBEKqRfaj/KvxPWbuo4ZdR5ri71F2svEemIoxwD+ljTwufQG1iqTxrbaufUrCVlW7AstVKi/FkOIv+wmBSN7bZf2qAycVoMDAcApGznCw65USw+cRQnmAN+28i6pRFvgdB04t89/1O/w1cDnyilFU=";
 
+const SPREADSHEET_ID = "1V7m1po_DhToXgcNLs4H3RQa2uKhldGITC1kJaQAUmvQ";
+
 const FOLDER_ID = "1r0gl9DOnpvj4OAA_qd4SO1LuU5CsTlnU";
 
 const POPULATION_LIMIT = 6;
+
+const TURN_LIMIT = 3;
 
 const RECRUIT_BUBBLE_MESSAGE = 
 {

@@ -1,5 +1,5 @@
 function handleGroupEvent(event) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
   var me;
   //探す処理
@@ -13,7 +13,7 @@ function handleGroupEvent(event) {
   var flag = 0; //グループ検索フラグ
   var state;
 
-  for(var i = 0; i < length; i++) {
+  for(var i = 0; i < length - 2; i++) {
     var range = sheet.getRange(i+3, 2);
     if(range.getValue() == groupId) {
       range = sheet.getRange(i+3, 3);
@@ -75,16 +75,3 @@ function handleGroupEvent(event) {
   return me;
 }
 
-function handleUserEvent(event) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-
-  var me;
-  if(event.type == "message") {
-    if(event.message.type == "text") { //テキストメッセージだったときの処理
-      me = new UserTextMessageEvent(event);
-    } else if (event.message.type == "image") { //画像メッセージだったときの処理
-      me = new UserImageMessageEvent(event);
-    }
-  }
-  return me;
-}

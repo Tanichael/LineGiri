@@ -99,14 +99,54 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
 
         range = sheet.getRange(this.sessionId+3, 5);
         var userId = range.getValue();
+
+        //GameDataデータベースに場所を確保する
+        const gameDataSheet = this.ss.getSheetByName("GameData");
+        var gameDataRange;
+        
+        var length = gameDataSheet.getRange(1, 1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+
+        //id指定
+        gameDataRange = gameDataSheet.getRange(length+1, 1);
+        gameDataRange.setValue(length-2);
+
+        //sessionId指定
+        gameDataRange = gameDataSheet.getRange(length+1, 2);
+        gameDataRange.setValue(this.sessionId);
+
+        //ターン数指定
+        gameDataRange = gameDataSheet.getRange(length+1, 3);
+        gameDataRange.setValue(0);
+
+        //userId指定
+        gameDataRange = gameDataSheet.getRange(length+1, 4);
+        gameDataRange.setValue(userId);
+
+        //state指定
+        gameDataRange = gameDataSheet.getRange(length+1, 5);
+        gameDataRange.setValue(1);
+
         this.ug.getInfo(userId);
         replyText += "\n\n" + "ゲームを開始します！\n" + this.ug.userInfo.displayName + "さんは個人チャットでお題と絵を送信してください！";
         this.mr.reply(replyText);
 
         var mp = new MessagePusher(userId);
         mp.push("「り」から始まるお題を返信してください！");
+
       }
     }
   }
 
+}
+
+function test() {
+  const ss = SpreadsheetApp.openById("1V7m1po_DhToXgcNLs4H3RQa2uKhldGITC1kJaQAUmvQ");
+  const gameDataSheet = ss.getSheetByName("GameData");
+  var gameDataRange;
+  
+  var length = gameDataSheet.getRange(1, 1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+
+  //id指定
+  gameDataRange = gameDataSheet.getRange(length+1, 1);
+  gameDataRange.setValue(length-2);
 }
