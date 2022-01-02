@@ -29,9 +29,15 @@ class GroupAnswerMessageEvent extends MessageEvent {
       var populationRange = sheet.getRange(this.sessionId+3, 4);
       var population = populationRange.getValue();
 
+      var turnRange = sheet.getRange(this.sessionId+3, 18);
+      var turn = turnRange.getValue();
+
+      var idx = turn % population;
+
       var answerBubbleMessage = ANSWER_BUBBLE_MESSAGE_BASE;
 
       for(var i = 0; i < population; i++) {
+        // if(i == idx) continue; //テストの時は一人なので...
         var userIdRange = sheet.getRange(this.sessionId+3, 5+i);
         var userId = userIdRange.getValue();
         var button = ANSWER_BUTTON_BASE;
@@ -47,12 +53,37 @@ class GroupAnswerMessageEvent extends MessageEvent {
         answerBubbleMessage.contents.body.contents.push(button);
       }
 
-      this.mp.push("回答を締め切ります！絵を描いた人は正解者を選んでください！！");
-      this.mp.pushBubble(answerBubbleMessage);
+      this.mp.push("回答を締め切ります！絵を描いた人は個人チャットで正解者を選んでください！！");
+
+      var drawerId = this.getDrawerId();
+
+      var mpUser = new MessagePusher(drawerId);
+      mpUser.push("正解者を選んでください！");
+      mpUser.pushBubble(answerBubbleMessage);
 
       this.manageState();
 
     }
+  }
+
+  getDrawerId() {
+    var drawerId;
+
+    var sheet = this.ss.getSheetByName("Sessions");
+    var range;
+
+    range = sheet.getRange(this.sessionId+3, 18);
+    var turn = range.getValue();
+
+    range = sheet.getRange(this.sessionId+3, 4);
+    var population = range.getValue();
+
+    var idx = turn % population;
+
+    range = sheet.getRange(this.sessionId+3, 5+idx);
+    drawerId = range.getValue();
+
+    return drawerId;
   }
 
   manageState() {

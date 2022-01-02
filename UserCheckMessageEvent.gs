@@ -9,11 +9,10 @@ class UserCheckMessageEvent extends MessageEvent {
 
   //実行する処理をまとめる
   handle() {
-    if(this.event.type != "postback") {
-      this.mp.push("正解者を選択してください！");
-      return;
+    if(this.event.type == "postback") {
+      this.processingEvent();
     }
-    this.processingEvent();
+    
   }
 
   setSessionId() {
@@ -24,42 +23,8 @@ class UserCheckMessageEvent extends MessageEvent {
 
   processingEvent() {
     this.setSessionId();
-
-    var userId = this.source.userId;
-
-    var isDrawer = this.isDrawer(userId);
-    this.mp.push(isDrawer);
-
-    if(isDrawer == true) {
-      this.mp.push("あなたは絵を描いた人です！");
-    } else {
-      this.mp.push("絵を描いた人が正解者を選択してください！");
-    }
+    this.mp.push("正解者選択を検知");
     
-  }
-
-  isDrawer(userId) {
-    var isDrawer = false;
-
-    var sheet = this.ss.getSheetByName("Sessions");
-    var range;
-    range = sheet.getRange(this.sessionId+3, 18);
-    var turn = range.getValue();
-    range = sheet.getRange(this.sessionId+3, 4);
-    var population = range.getValue();
-    var idx = turn % population;
-
-    var drawerId;
-    range = sheet.getRange(this.sessoinId+3, 5+idx);
-    drawerId = range.getValue();
-    range = sheet.getRange(4, 1);
-    range.setValue(drawerId);
-
-    if(userId == drawerId) {
-      isDrawer = true;
-    }
-
-    return isDrawer;
   }
 
 }
