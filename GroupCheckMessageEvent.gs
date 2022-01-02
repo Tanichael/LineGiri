@@ -1,40 +1,16 @@
-//答え合わせ時のメッセージイベント
+//答え合わせ時のグループのメッセージイベント
 class GroupCheckMessageEvent extends MessageEvent {
-  constructor(event) {
+  constructor(event, sessionId) {
     super(event);
+    this.sessionId = sessionId;
+    this.mr = new MessageReplyer(event.replyToken);
+    this.mp = new MessagePusher(event.source.groupId);
   }
 
   //実行する処理をまとめる
   handle() {
-    this.processingEvent();
-    this.reply();
+    this.mp.push("正解者選択待ちです！");
+    return;
   }
 
-  //themeを記録
-  processingEvent() {
-    
-  }
-
-  reply() {
-    //返信処理
-    this.setReplyConfig();
-
-    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/reply', this.replyOptions);
-  }
-
-  setReplyText() {
-    if(this.isStart == true) {
-      //バブルメッセージの生成
-      var replyText = "メンバー募集メッセージを送信します";
-      this.replyText = replyText;
-    } else {
-      var replyText = "ゲームを始める際は「@start」と発言してください！";
-      this.replyText = replyText;
-    }
-  }
-
-  setReplyConfig() {
-    this.setReplyText();
-    this.setReplyOptions();
-  }
 }

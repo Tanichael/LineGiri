@@ -15,12 +15,22 @@ class MessagePusher {
     UrlFetchApp.fetch('https://api.line.me/v2/bot/message/push', this.pushOptions);
   }
 
+  pushBubble(bubbleMessage) {
+    this.setPushBubbleConfig(bubbleMessage);
+
+    UrlFetchApp.fetch('https://api.line.me/v2/bot/message/push', this.pushOptions);
+  }
+
   setPushText(text) {
     this.pushText = text;
   }
 
   setPushImageId(pushId) {
     this.pushId = pushId;
+  }
+
+  setPushBubble(bubbleMessage) {
+    this.pushBubble = bubbleMessage;
   }
 
   setPushOptions() {
@@ -68,6 +78,25 @@ class MessagePusher {
     this.pushOptions = pushOptions;
   }
 
+  setPushBubbleOptions() {
+    var LineMessageObject = [this.pushBubble];
+    var pushHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + TOKEN
+    };
+    var pushBody = {
+      'to': this.id,
+      'messages': LineMessageObject
+    };
+    var pushOptions = {
+      'method': 'POST',
+      'headers': pushHeaders,
+      'payload': JSON.stringify(pushBody)
+    };
+
+    this.pushOptions = pushOptions;
+  }
+
   setPushConfig(text) {
     this.setPushText(text);
     this.setPushOptions();
@@ -76,5 +105,10 @@ class MessagePusher {
   setPushImageConfig(pushId) {
     this.setPushImageId(pushId);
     this.setPushImageOptions();
+  }
+
+  setPushBubbleConfig(bubbleMessage) {
+    this.setPushBubble(bubbleMessage);
+    this.setPushBubbleOptions();
   }
 }

@@ -107,4 +107,81 @@ const RECRUIT_BUBBLE_MESSAGE =
       ]
     }
   }
-}
+};
+
+const ANSWER_BUBBLE_MESSAGE_BASE =
+{
+  "type": "flex",
+  "altText": "This is a Flex Message",
+  "contents": {
+    "type": "bubble",
+    "hero": {
+      "type": "image",
+      "url": "https://pbs.twimg.com/media/FIBUlnSaMAQ9Fzr?format=jpg&name=large",
+      "size": "full",
+      "aspectRatio": "20:13",
+      "aspectMode": "cover",
+      "backgroundColor": "#FFFFFFFF"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "md",
+      "action": {
+        "type": "uri",
+        "label": "Action",
+        "uri": "https://linecorp.com"
+      },
+      "contents": [
+        //ここにボタン足す
+        {
+          "type": "spacer",
+          "size": "xs"
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "spacer",
+          "size": "xs"
+        },
+        {
+          "type": "button",
+          "action": {
+            "type": "postback",
+            "label": "確定！",
+            "text": "確定しました",
+            "data": "end"
+          },
+          "color": "#FF0000FF",
+          "height": "md",
+          "style": "primary"
+        },
+        {
+          "type": "text",
+          "text": "hello, world",
+          "size": "xxs",
+          "color": "#FFFFFFFF",
+          "contents": []
+        }
+      ]
+    }
+  }
+};
+
+const ANSWER_BUTTON_BASE = 
+{
+  "type": "button",
+  "action": {
+    "type": "postback",
+    "label": "参加者",
+    "text": "選択しました",
+    "data": "right"
+  },
+  "color": "#0E57FEFF",
+  "height": "sm",
+  "style": "primary"
+};
