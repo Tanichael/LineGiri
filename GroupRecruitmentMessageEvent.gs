@@ -39,6 +39,7 @@ class GroupRecruitmentMessageEvent extends MessageEvent {
 
         if(population == POPULATION_LIMIT) {
           this.isLimit = true;
+          this.mr.reply("これ以上は参加できません！");
           return;
         }
 
