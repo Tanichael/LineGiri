@@ -42,20 +42,41 @@ class GroupAnswerMessageEvent extends MessageEvent {
 
         button.action.label = name;
         button.action.data = userId;
+        button.action.text = "選択しました";
         
         answerBubbleMessage.contents.body.contents.push(button);
       }
 
-
       this.mp.push("回答を締め切ります！絵を描いた人は正解者を選んでください！！");
       this.mp.pushBubble(answerBubbleMessage);
 
-      //ステートの管理
-      var stateRange = sheet.getRange(this.sessionId+3, 3);
-      stateRange.setValue(3);
+      this.manageState();
 
     }
-    
+  }
+
+  manageState() {
+    var sheet = this.ss.getSheetByName("Sessions");
+    //ステートの管理
+    var stateRange = sheet.getRange(this.sessionId+3, 3);
+    stateRange.setValue(3);
+
+    //sessionIdが一緒でstateが3のゲームデータを探して、stateを4にする
+    var gameDataSheet = this.ss.getSheetByName("GameData");
+    var gameDataLength = gameDataSheet.getRange(1, 1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+    for(var i = 0; i < gameDataLength; i++) {
+      var range = gameDataSheet.getRange(i+3, 2);
+      var sessionId = range.getValue();
+      if(this.sessionId == sessionId) {
+        var gameDataStateRange = gameDataSheet.getRange(i+3, 5);
+        var state = gameDataStateRange.getValue();
+        if(state == 3) {
+          gameDataStateRange.setValue(4);
+          break;
+        }
+      }
+    }
+
   }
 
 }

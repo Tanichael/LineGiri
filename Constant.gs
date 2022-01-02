@@ -153,7 +153,7 @@ const ANSWER_BUBBLE_MESSAGE_BASE =
           "action": {
             "type": "postback",
             "label": "確定！",
-            "text": "end",
+            "text": "確定しました",
             "data": "end"
           },
           "color": "#FF0000FF",
@@ -178,6 +178,7 @@ const ANSWER_BUTTON_BASE =
   "action": {
     "type": "postback",
     "label": "参加者",
+    "text": "選択しました",
     "data": "right"
   },
   "color": "#0E57FEFF",

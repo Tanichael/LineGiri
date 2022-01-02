@@ -19,7 +19,7 @@ function handleUserEvent(event) {
       state = range.getValue();
 
       //すでに処理終了しているデータ
-      if(state == 3) continue;
+      if(state == 5) continue;
 
       if(state == 1) {
         flag = 1;
@@ -32,6 +32,20 @@ function handleUserEvent(event) {
         flag = 1;
         id = i;
         me = new UserImageMessageEvent(event, id);
+        break;
+      }
+
+      if(state == 3) {
+        flag = 1;
+        id = i;
+        me = new UserWaitMessageEvent(event, id);
+        break;
+      }
+
+      if(state == 4) {
+        flag = 1;
+        id = i;
+        me = new UserCheckMessageEvent(event, id);
         break;
       }
     }

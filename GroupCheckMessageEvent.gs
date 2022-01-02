@@ -1,22 +1,16 @@
-//答え合わせ時のメッセージイベント
+//答え合わせ時のグループのメッセージイベント
 class GroupCheckMessageEvent extends MessageEvent {
-  constructor(event) {
+  constructor(event, sessionId) {
     super(event);
+    this.sessionId = sessionId;
     this.mr = new MessageReplyer(event.replyToken);
+    this.mp = new MessagePusher(event.source.groupId);
   }
 
   //実行する処理をまとめる
   handle() {
-    if(this.event.type != "postback") {
-      this.mr.reply("正解者を選んでください！");
-      return;
-    }
-    this.processingEvent();
-  }
-
-  //themeを記録
-  processingEvent() {
-    
+    this.mp.push("正解者選択待ちです！");
+    return;
   }
 
 }

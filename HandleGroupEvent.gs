@@ -43,7 +43,7 @@ function handleGroupEvent(event) {
         //答え合わせタイムの時
         flag = 1;
         sessionId = i;
-        me = new GroupCheckMessageEvent(event);
+        me = new GroupCheckMessageEvent(event, sessionId);
         break;
       }
     }
