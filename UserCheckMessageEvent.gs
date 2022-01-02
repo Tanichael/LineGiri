@@ -6,6 +6,8 @@ class UserCheckMessageEvent extends MessageEvent {
     this.mr = new MessageReplyer(event.replyToken);
     this.mp = new MessagePusher(event.source.userId);
     this.ug = new UserInfoGetter();
+    this.sessionsSheet = this.ss.getSheetByName("Sessions");
+    this.gameDataSheet = this.ss.getSheetByName("GameData");
   }
 
   //実行する処理をまとめる
@@ -48,6 +50,16 @@ class UserCheckMessageEvent extends MessageEvent {
       }
 
       this.mp.push(pushMessage);
+
+      this.calculatePoints();
+      var pointsMessage = this.createPointsMessage();
+
+      var sessionsSheet = this.ss.getSheetByName("Sessions");
+      var groupIdRange = sessionsSheet.getRange(this.sessionId+3, 2);
+      var groupId = groupIdRange.getValue();
+      var mpGroup = new MessagePusher(groupId);
+      mpGroup.push(pushMessage);
+      mpGroup.push(pointsMessage);
 
       //ステートの管理
       this.manageState();
@@ -107,6 +119,61 @@ class UserCheckMessageEvent extends MessageEvent {
     sheet = this.ss.getSheetByName("Sessions");
     stateRange = sheet.getRange(this.sessionId+3, 3);
     stateRange.setValue(4);
+  }
+
+  calculatePoints() {
+    var correctNumRange = this.gameDataSheet.getRange(this.id+3, 8);
+    var correctNum = correctNumRange.getValue();
+    for(var i = 0; i < correctNum; i++) {
+      var correctUserId;
+      var correctUserIdRange = this.gameDataSheet.getRange(this.id+3, 9+i);
+      correctUserId = correctUserIdRange.getValue();
+
+      var populationRange = this.sessionsSheet.getRange(this.sessionId+3, 4);
+      var population = populationRange.getValue();
+      for(var j = 0; j < population; j++) {
+        var userId;
+        var userIdRange = this.sessionsSheet.getRange(this.sessionId+3, 5+j);
+        userId = userIdRange.getValue();
+        
+        if(userId == correctUserId) {
+          var pointsRange = this.sessionsSheet.getRange(this.sessionId+3, 11+j);
+          var points = pointsRange.getValue();
+
+          //ここは一旦適当に
+          points += 10;
+          pointsRange.setValue(points);
+        }
+      }
+    }
+  }
+
+  createPointsMessage() {
+    var pointsMessage = "現在の得点\n";
+
+    var populationRange = this.sessionsSheet.getRange(this.sessionId+3, 4);
+    var population = populationRange.getValue();
+
+    for(var i = 0; i < population; i++) {
+      var userId;
+      var userIdRange = this.sessionsSheet.getRange(this.sessionId+3, 5+i);
+      userId = userIdRange.getValue();
+
+      this.ug.getInfo(userId);
+      var userName = this.ug.userInfo.displayName;
+      
+      var pointsRange = this.sessionsSheet.getRange(this.sessionId+3, 11+i);
+      var points = pointsRange.getValue();
+
+      pointsMessage = pointsMessage + userName + ": " + points;
+
+      if(i != population - 1) {
+        pointsMessage += "\n";
+      }
+
+    }
+
+    return pointsMessage;
   }
 
 }
