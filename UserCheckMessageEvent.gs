@@ -46,10 +46,10 @@ class UserCheckMessageEvent extends MessageEvent {
           var userName = this.ug.userInfo.displayName;
           pushMessage += userName + "\n";
         }
-        pushMessage += "\nです！\nグループに戻ってください！";
+        pushMessage += "\nです！";
       }
 
-      this.mp.push(pushMessage);
+      this.mp.push(pushMessage + "\nグループに戻ってください！");
 
       this.calculatePoints();
       var pointsMessage = this.createPointsMessage();
@@ -58,6 +58,7 @@ class UserCheckMessageEvent extends MessageEvent {
       var groupIdRange = sessionsSheet.getRange(this.sessionId+3, 2);
       var groupId = groupIdRange.getValue();
       var mpGroup = new MessagePusher(groupId);
+      this.mpGroup = mpGroup;
       mpGroup.push(pushMessage);
       mpGroup.push(pointsMessage);
 
@@ -117,8 +118,21 @@ class UserCheckMessageEvent extends MessageEvent {
     stateRange.setValue(5);
 
     sheet = this.ss.getSheetByName("Sessions");
+    var turnRange = sheet.getRange(this.sessionId+3, 18);
+    var turn = turnRange.getValue();
+
+    var populationRange = sheet.getRange(this.sessionId+3, 4);
+    var population = populationRange.getValue();
+
     stateRange = sheet.getRange(this.sessionId+3, 3);
-    stateRange.setValue(4);
+
+    if(turn >= population * CYCLE_LIMIT - 1) {
+      this.mpGroup.push("ゲームはこれで終わりです！プレイしてくれてありがとう！！");
+      stateRange.setValue(5);
+    } else {
+      this.mpGroup.push("次のお題に行くときは「@next」と発言してください！");
+      stateRange.setValue(4);
+    }
   }
 
   calculatePoints() {

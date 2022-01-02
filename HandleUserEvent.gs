@@ -55,7 +55,7 @@ function handleUserEvent(event) {
   if(flag == 0) {
     //ゲーム中じゃない時の処理
     var mr = new MessageReplyer(event.replyToken);
-    mr.reply("ゲーム中ちゃうでー");
+    mr.reply("今はゲーム中じゃないか、回答者かのどっちかです！！");
   }
 
 

@@ -19,7 +19,7 @@ function handleGroupEvent(event) {
       range = sheet.getRange(i+3, 3);
       state = range.getValue();
       //終了しているゲームの時
-      if(state == 4) continue;
+      if(state == 5) continue;
       
       if(state == 0) {
         //募集時の時
@@ -44,6 +44,12 @@ function handleGroupEvent(event) {
         flag = 1;
         sessionId = i;
         me = new GroupCheckMessageEvent(event, sessionId);
+        break;
+      } else if(state == 4) {
+        //談笑タイムのとき
+        flag = 1;
+        sessionId = i;
+        me = new GroupTalkMessageEvent(event, sessionId);
         break;
       }
     }
